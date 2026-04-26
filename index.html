@@ -1,583 +1,1493 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hi">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Consisteencyy — Personal Fitness Planner | Lean Bulk & Fat Loss Plans</title>
-  <meta name="description" content="Get your personalized 3-6 day workout & Indian diet plan. Lean bulk, fat loss, strength training. Non-veg, veg, egg options. Jaipur's best fitness coach.">
-  <meta name="keywords" content="fitness planner, workout plan, diet plan, lean bulk, fat loss, Indian diet, gym routine, protein calculator">
-  <meta property="og:title" content="Consisteencyy — Your Personal Fitness Planner">
-  <meta property="og:description" content="Get customized workout & diet plans for lean bulk, fat loss & strength. Works for veg/non-veg.">
-  <meta property="og:image" content="https://consisteencyy.vercel.app/og-image.jpg">
-  <meta property="og:url" content="https://consisteencyy.vercel.app">
-  
-  <!-- Preload critical fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  
-  <!-- Favicon -->
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💪</text></svg>">
-  
-  <style>
-    :root {
-      --bg: #0a0a0a;
-      --surface: #1a1a1a;
-      --card: #212121;
-      --border: #333;
-      --accent: #FF6B35;
-      --accent-glow: #FF8E53;
-      --text: #F5F5F5;
-      --text-muted: #B0B0B0;
-      --success: #10B981;
-      --gradient: linear-gradient(135deg, #FF6B35 0%, #F7931E 100%);
-    }
-
-    * { 
-      margin: 0; 
-      padding: 0; 
-      box-sizing: border-box; 
-    }
-
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: 'Inter', -apple-system, sans-serif;
-      line-height: 1.6;
-      min-height: 100vh;
-      overflow-x: hidden;
-      scroll-behavior: smooth;
-    }
-
-    /* Performance: Noise texture optimized */
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background-image: 
-        radial-gradient(circle at 25% 25%, rgba(255,107,53,0.03) 0%, transparent 50%),
-        radial-gradient(circle at 75% 75%, rgba(247,147,30,0.02) 0%, transparent 50%);
-      pointer-events: none;
-      z-index: 999;
-    }
-
-    .container { 
-      max-width: 400px; 
-      margin: 0 auto; 
-      padding: 20px 16px 80px; 
-    }
-
-    /* Header - Improved spacing */
-    header {
-      text-align: center;
-      padding: 32px 0;
-      animation: slideDown 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    }
-
-    .brand {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(32px, 8vw, 48px);
-      background: var(--gradient);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      letter-spacing: 2px;
-      margin-bottom: 8px;
-      text-shadow: 0 0 20px rgba(255,107,53,0.3);
-    }
-
-    .tagline {
-      font-size: 14px;
-      color: var(--text-muted);
-      font-weight: 300;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-    }
-
-    /* Progress bar - Better mobile spacing */
-    .progress-track {
-      margin: 40px 0 0;
-      display: flex;
-      gap: 8px;
-      padding: 0 8px;
-    }
-
-    .progress-step {
-      height: 4px;
-      flex: 1;
-      background: var(--border);
-      border-radius: 4px;
-      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .progress-step.active {
-      background: var(--accent);
-      box-shadow: 0 0 12px rgba(255,107,53,0.4);
-    }
-
-    .progress-step.done { 
-      background: var(--success); 
-    }
-
-    /* Screens - Better animations */
-    .screen { 
-      display: none; 
-      opacity: 0;
-      transform: translateY(30px);
-      animation: fadeUp 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-    }
-
-    .screen.active { 
-      display: block; 
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    @keyframes fadeUp {
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    @keyframes slideDown {
-      from { opacity: 0; transform: translateY(-30px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    /* Typography - Better hierarchy */
-    .screen-title {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(28px, 7vw, 40px);
-      line-height: 1.1;
-      margin: 40px 0 12px;
-      letter-spacing: 1px;
-    }
-
-    .screen-sub {
-      font-size: 15px;
-      color: var(--text-muted);
-      margin-bottom: 36px;
-      font-weight: 300;
-    }
-
-    /* Forms - Better spacing & focus states */
-    .input-group { 
-      margin-bottom: 28px; 
-    }
-
-    label {
-      display: block;
-      font-size: 12px;
-      font-weight: 500;
-      color: var(--accent);
-      margin-bottom: 12px;
-      letter-spacing: 0.5px;
-      text-transform: uppercase;
-    }
-
-    input[type="number"], input[type="text"], select {
-      width: 100%;
-      background: var(--card);
-      border: 2px solid transparent;
-      color: var(--text);
-      padding: 16px 20px;
-      font-size: 16px;
-      border-radius: 12px;
-      outline: none;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      backdrop-filter: blur(10px);
-    }
-
-    input:focus, select:focus {
-      border-color: var(--accent);
-      box-shadow: 0 0 0 4px rgba(255,107,53,0.1);
-      transform: translateY(-1px);
-    }
-
-    /* Option cards - Better hover & selection */
-    .option-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      margin-bottom: 28px;
-    }
-
-    .option-card {
-      background: var(--card);
-      border: 2px solid var(--border);
-      border-radius: 16px;
-      padding: 20px 16px;
-      cursor: pointer;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      text-align: center;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .option-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 2px;
-      background: var(--gradient);
-      transform: scaleX(0);
-      transition: transform 0.3s ease;
-    }
-
-    .option-card:hover {
-      border-color: var(--accent);
-      transform: translateY(-4px);
-      box-shadow: 0 20px 40px rgba(255,107,53,0.15);
-    }
-
-    .option-card:hover::before {
-      transform: scaleX(1);
-    }
-
-    .option-card.selected {
-      border-color: var(--accent);
-      background: rgba(255,107,53,0.08);
-      box-shadow: 0 0 0 4px rgba(255,107,53,0.2);
-    }
-
-    .option-card .icon { 
-      font-size: 28px; 
-      margin-bottom: 12px; 
-    }
-
-    .option-card .label { 
-      font-size: 14px; 
-      font-weight: 600; 
-      margin-bottom: 4px;
-    }
-
-    .option-card .sub { 
-      font-size: 12px; 
-      color: var(--text-muted); 
-    }
-
-    /* Buttons - Better CTAs */
-    .btn {
-      width: 100%;
-      background: var(--gradient);
-      color: #000;
-      border: none;
-      padding: 18px 24px;
-      font-size: 16px;
-      font-weight: 600;
-      border-radius: 12px;
-      cursor: pointer;
-      letter-spacing: 0.5px;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      margin-top: 12px;
-      position: relative;
-      overflow: hidden;
-      text-transform: uppercase;
-      font-family: 'Inter', sans-serif;
-    }
-
-    .btn::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-      transition: left 0.5s;
-    }
-
-    .btn:hover::before {
-      left: 100%;
-    }
-
-    .btn:hover { 
-      transform: translateY(-2px);
-      box-shadow: 0 20px 40px rgba(255,107,53,0.3);
-    }
-
-    .btn:active { 
-      transform: translateY(0); 
-    }
-
-    .btn-outline {
-      background: transparent;
-      border: 2px solid var(--border);
-      color: var(--text);
-      margin-top: 12px;
-    }
-
-    .btn-outline:hover { 
-      border-color: var(--accent);
-      color: var(--accent);
-      box-shadow: 0 10px 25px rgba(255,107,53,0.2);
-    }
-
-    /* Error messages */
-    .error-msg {
-      color: #EF4444;
-      font-size: 13px;
-      margin: 12px 0;
-      display: none;
-      font-weight: 500;
-      background: rgba(239,68,68,0.1);
-      padding: 12px;
-      border-radius: 8px;
-      border-left: 4px solid #EF4444;
-    }
-
-    /* Results - Better visual hierarchy */
-    .result-header {
-      background: linear-gradient(135deg, var(--surface) 0%, var(--card) 100%);
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 32px 24px;
-      margin: 32px 0 28px;
-      position: relative;
-      overflow: hidden;
-      backdrop-filter: blur(20px);
-    }
-
-    .result-header::before {
-      content: '';
-      position: absolute;
-      top: -50px;
-      right: -50px;
-      width: 150px;
-      height: 150px;
-      background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
-      opacity: 0.1;
-    }
-
-    .result-name {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(24px, 6vw, 32px);
-      background: var(--gradient);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      letter-spacing: 1px;
-      margin-bottom: 8px;
-    }
-
-    .result-stats {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-      margin-top: 20px;
-    }
-
-    .stat-box {
-      background: rgba(255,107,53,0.05);
-      border: 1px solid rgba(255,107,53,0.2);
-      border-radius: 12px;
-      padding: 16px 12px;
-      text-align: center;
-    }
-
-    .stat-val {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 24px;
-      color: var(--accent);
-      font-weight: 700;
-      letter-spacing: 1px;
-    }
-
-    .stat-label { 
-      font-size: 11px; 
-      color: var(--text-muted); 
-      text-transform: uppercase; 
-      letter-spacing: 1px;
-      margin-top: 4px;
-    }
-
-    /* Sections - Better collapsible */
-    .section {
-      margin-bottom: 20px;
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      overflow: hidden;
-      transition: all 0.3s ease;
-    }
-
-    .section-header {
-      background: var(--card);
-      padding: 20px 24px;
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      cursor: pointer;
-      user-select: none;
-      transition: all 0.3s ease;
-    }
-
-    .section-header:hover {
-      background: rgba(255,107,53,0.05);
-    }
-
-    .section-icon { 
-      font-size: 20px; 
-    }
-
-    .section-title {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 22px;
-      letter-spacing: 0.5px;
-      flex: 1;
-    }
-
-    .section-arrow {
-      color: var(--text-muted);
-      transition: transform 0.3s ease;
-      font-size: 14px;
-    }
-
-    .section.open .section-arrow { 
-      transform: rotate(180deg); 
-    }
-
-    .section-body {
-      display: none;
-      padding: 24px;
-      background: var(--surface);
-      animation: expand 0.3s ease;
-    }
-
-    .section.open .section-body { 
-      display: block; 
-    }
-
-    @keyframes expand {
-      from { opacity: 0; height: 0; }
-      to { opacity: 1; height: auto; }
-    }
-
-    /* Content blocks */
-    .day-block { 
-      margin-bottom: 24px; 
-    }
-
-    .day-title {
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      color: var(--accent);
-      margin-bottom: 16px;
-      font-weight: 600;
-      padding-bottom: 8px;
-      border-bottom: 1px solid rgba(255,107,53,0.3);
-    }
-
-    .exercise-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 16px 0;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .exercise-row:last-child { 
-      border-bottom: none; 
-    }
-
-    .ex-name { 
-      font-size: 15px; 
-      font-weight: 500; 
-    }
-
-    .ex-sets {
-      font-size: 13px;
-      color: var(--accent);
-      background: rgba(255,107,53,0.15);
-      padding: 6px 12px;
-      border-radius: 20px;
-      font-weight: 600;
-    }
-
-    /* Meal blocks */
-    .meal-block { 
-      margin-bottom: 20px; 
-    }
-
-    .meal-time {
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      color: var(--accent);
-      margin-bottom: 12px;
-      font-weight: 600;
-    }
-
-    .meal-item {
-      display: flex;
-      justify-content: space-between;
-      padding: 12px 0;
-      border-bottom: 1px solid var(--border);
-      font-size: 15px;
-    }
-
-    .meal-item:last-child { 
-      border-bottom: none; 
-    }
-
-    .meal-cal { 
-      color: var(--text-muted); 
-      font-size: 13px; 
-    }
-
-    /* Tips */
-    .tip-item {
-      display: flex;
-      gap: 16px;
-      padding: 16px 0;
-      border-bottom: 1px solid var(--border);
-      font-size: 15px;
-      line-height: 1.6;
-    }
-
-    .tip-item:last-child { 
-      border-bottom: none; 
-    }
-
-    .tip-num {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 22px;
-      color: var(--accent);
-      min-width: 28px;
-      letter-spacing: 1px;
-      font-weight: 700;
-    }
-
-    /* Macros */
-    .macro-row { 
-      margin-bottom: 16px; 
-    }
-
-    .macro-label { 
-      display: flex; 
-      justify-content: space-between; 
-      font-size: 14px; 
-      margin-bottom: 8px; 
-    }
-
-    .macro-val { 
-      color: var(--accent); 
-      font-weight: 600; 
-    }
-
-    .macro-bar { 
-      height: 8px; 
-      background: var(--border); 
-      border-radius: 4px; 
-      overflow: hidden; 
-    }
-
-    .macro-fill { 
-      height: 100%; 
-      border-radius: 4px; 
-      transition: width 1s cubic-bezier(0.4, 0, 0.2, 1); 
-    }
-
-    /*
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Consisteencyy — Tera Personal Fitness Planner</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #212121;
+    --surface: #2a2a2a;
+    --card: #2f2f2f;
+    --border: #383838;
+    --accent: #AEFF46;
+    --accent2: #ffffff;
+    --text: #f0f0f0;
+    --muted: #777;
+    --success: #AEFF46;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Noise texture overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0.4;
+  }
+
+  .container { max-width: 480px; margin: 0 auto; padding: 0 20px 60px; }
+
+  /* Header */
+  header {
+    padding: 40px 20px 0;
+    max-width: 480px;
+    margin: 0 auto;
+    animation: slideDown 0.6s ease;
+  }
+
+  .brand {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 48px;
+    letter-spacing: 2px;
+    color: var(--accent);
+    line-height: 1;
+  }
+
+  .brand span { color: var(--text); }
+
+  .tagline {
+    font-size: 13px;
+    color: var(--muted);
+    margin-top: 4px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  /* Progress bar */
+  .progress-track {
+    margin: 32px 0 0;
+    display: flex;
+    gap: 6px;
+  }
+
+  .progress-step {
+    height: 3px;
+    flex: 1;
+    background: var(--border);
+    border-radius: 2px;
+    transition: background 0.4s ease;
+  }
+
+  .progress-step.active { background: var(--accent); }
+  .progress-step.done { background: var(--success); }
+
+  /* Screens */
+  .screen { display: none; animation: fadeUp 0.5s ease; }
+  .screen.active { display: block; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Screen title */
+  .screen-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 36px;
+    letter-spacing: 1px;
+    margin: 32px 0 4px;
+    line-height: 1.1;
+  }
+
+  .screen-sub {
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 28px;
+  }
+
+  /* Input styles */
+  .input-group { margin-bottom: 20px; }
+
+  label {
+    display: block;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+
+  input[type="number"], input[type="text"], select {
+    width: 100%;
+    background: var(--card);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 14px 16px;
+    font-size: 16px;
+    font-family: 'DM Sans', sans-serif;
+    border-radius: 8px;
+    outline: none;
+    transition: border-color 0.2s;
+    -webkit-appearance: none;
+  }
+
+  input:focus, select:focus { border-color: var(--accent); }
+
+  select option { background: var(--card); }
+
+  /* Option cards */
+  .option-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+
+  .option-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+  }
+
+  .option-card:hover { border-color: var(--accent); }
+  .option-card.selected { border-color: var(--accent); background: rgba(232,255,0,0.05); }
+
+  .option-card .icon { font-size: 24px; margin-bottom: 6px; }
+  .option-card .label { font-size: 13px; font-weight: 500; }
+  .option-card .sub { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+  /* Button */
+  .btn {
+    width: 100%;
+    background: var(--accent);
+    color: #000;
+    border: none;
+    padding: 16px;
+    font-size: 15px;
+    font-weight: 600;
+    font-family: 'DM Sans', sans-serif;
+    border-radius: 10px;
+    cursor: pointer;
+    letter-spacing: 0.5px;
+    transition: all 0.2s;
+    margin-top: 8px;
+  }
+
+  .btn:hover { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(232,255,0,0.2); }
+  .btn:active { transform: translateY(0); }
+
+  .btn-outline {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text);
+    margin-top: 10px;
+  }
+
+  .btn-outline:hover { border-color: var(--muted); box-shadow: none; }
+
+  /* Result screen */
+  .result-header {
+    background: linear-gradient(135deg, var(--card), #1a1a1a);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 24px;
+    margin: 24px 0 20px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .result-header::before {
+    content: '';
+    position: absolute;
+    top: -40px; right: -40px;
+    width: 120px; height: 120px;
+    background: var(--accent);
+    border-radius: 50%;
+    opacity: 0.05;
+  }
+
+  .result-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    color: var(--accent);
+    letter-spacing: 1px;
+  }
+
+  .result-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-top: 16px;
+  }
+
+  .stat-box {
+    background: var(--bg);
+    border-radius: 8px;
+    padding: 10px 8px;
+    text-align: center;
+  }
+
+  .stat-val {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    color: var(--accent);
+    letter-spacing: 1px;
+  }
+
+  .stat-label { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
+
+  /* Section */
+  .section {
+    margin-bottom: 16px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .section-header {
+    background: var(--card);
+    padding: 14px 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .section-icon { font-size: 18px; }
+
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    letter-spacing: 0.5px;
+    flex: 1;
+  }
+
+  .section-arrow {
+    color: var(--muted);
+    transition: transform 0.3s;
+    font-size: 12px;
+  }
+
+  .section.open .section-arrow { transform: rotate(180deg); }
+
+  .section-body {
+    display: none;
+    padding: 16px 18px;
+    background: var(--surface);
+  }
+
+  .section.open .section-body { display: block; }
+
+  /* Workout day */
+  .day-block { margin-bottom: 18px; }
+
+  .day-title {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--accent2);
+    margin-bottom: 10px;
+    font-weight: 600;
+  }
+
+  .exercise-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .exercise-row:last-child { border-bottom: none; }
+
+  .ex-name { font-size: 14px; font-weight: 500; }
+  .ex-sets {
+    font-size: 12px;
+    color: var(--accent);
+    background: rgba(232,255,0,0.08);
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-weight: 600;
+  }
+
+  /* Diet */
+  .meal-block { margin-bottom: 16px; }
+
+  .meal-time {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--accent2);
+    margin-bottom: 8px;
+    font-weight: 600;
+  }
+
+  .meal-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 14px;
+  }
+
+  .meal-item:last-child { border-bottom: none; }
+  .meal-cal { color: var(--muted); font-size: 13px; }
+
+  /* Tips */
+  .tip-item {
+    display: flex;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  .tip-item:last-child { border-bottom: none; }
+  .tip-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    color: var(--accent);
+    min-width: 24px;
+    letter-spacing: 1px;
+  }
+
+  /* Macros bar */
+  .macro-row { margin-bottom: 12px; }
+  .macro-label { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 5px; }
+  .macro-val { color: var(--accent); font-weight: 600; }
+  .macro-bar { height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; }
+  .macro-fill { height: 100%; border-radius: 3px; transition: width 0.8s ease; }
+
+  .share-btn {
+    background: var(--card);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-size: 13px;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 20px;
+    width: 100%;
+    justify-content: center;
+    transition: all 0.2s;
+  }
+
+  .share-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+  .error-msg {
+    color: var(--accent2);
+    font-size: 12px;
+    margin-top: 6px;
+    display: none;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">Consisteencyy</div>
+  <div class="tagline">Your Personal Fitness Planner</div>
+  <div class="progress-track">
+    <div class="progress-step active" id="p1"></div>
+    <div class="progress-step" id="p2"></div>
+    <div class="progress-step" id="p3"></div>
+    <div class="progress-step" id="p4"></div>
+  </div>
+</header>
+
+<div class="container">
+
+  <!-- Screen 1: Basic Info -->
+  <div class="screen active" id="screen1">
+    <div class="screen-title">Enter Your<br>Details</div>
+    <div class="screen-sub">Everything will be tailored to your body</div>
+
+    <div class="input-group">
+      <label>Your Name</label>
+      <input type="text" id="name" placeholder="e.g. Pankaj" />
+    </div>
+
+    <div class="input-group">
+      <label>Age (years)</label>
+      <input type="number" id="age" placeholder="22" min="14" max="60" />
+    </div>
+
+    <div class="input-group">
+      <label>Height (cm)</label>
+      <input type="number" id="height" placeholder="175" min="140" max="220" />
+    </div>
+
+    <div class="input-group">
+      <label>Current Weight (kg)</label>
+      <input type="number" id="weight" placeholder="70" min="40" max="150" />
+    </div>
+
+    <div class="input-group">
+      <label>Goal Weight (kg)</label>
+      <input type="number" id="goalWeight" placeholder="75" min="40" max="150" />
+    </div>
+
+    <div class="error-msg" id="err1">Please fill in all fields</div>
+    <button class="btn" onclick="goTo(2)">Continue →</button>
+  </div>
+
+  <!-- Screen 2: Goal -->
+  <div class="screen" id="screen2">
+    <div class="screen-title">What's Your<br>Goal?</div>
+    <div class="screen-sub">Be honest — this gives you the right plan</div>
+
+    <div class="option-grid" id="goalGrid">
+      <div class="option-card" onclick="selectOption(this, 'goalGrid', 'bulk')">
+        <div class="icon">💪</div>
+        <div class="label">Lean Bulk</div>
+        <div class="sub">Clean muscle gain</div>
+      </div>
+      <div class="option-card" onclick="selectOption(this, 'goalGrid', 'cut')">
+        <div class="icon">🔥</div>
+        <div class="label">Fat Loss</div>
+        <div class="sub">Get lean & shredded</div>
+      </div>
+      <div class="option-card" onclick="selectOption(this, 'goalGrid', 'maintain')">
+        <div class="icon">⚖️</div>
+        <div class="label">Maintain</div>
+        <div class="sub">Keep current weight</div>
+      </div>
+      <div class="option-card" onclick="selectOption(this, 'goalGrid', 'strength')">
+        <div class="icon">🏋️</div>
+        <div class="label">Strength</div>
+        <div class="sub">Pure power gain</div>
+      </div>
+    </div>
+
+    <div class="error-msg" id="err2">Please select a goal</div>
+    <button class="btn" onclick="goTo(3)">Continue →</button>
+    <button class="btn btn-outline" onclick="goTo(1)">← Back</button>
+  </div>
+
+  <!-- Screen 3: Fitness Level + Schedule -->
+  <div class="screen" id="screen3">
+    <div class="screen-title">Where Are<br>You Now?</div>
+    <div class="screen-sub">Be straight — no judgment here</div>
+
+    <label style="margin-bottom:10px; display:block">Fitness Level</label>
+    <div class="option-grid" id="levelGrid">
+      <div class="option-card" onclick="selectOption(this, 'levelGrid', 'beginner')">
+        <div class="icon">🌱</div>
+        <div class="label">Beginner</div>
+        <div class="sub">0–6 months</div>
+      </div>
+      <div class="option-card" onclick="selectOption(this, 'levelGrid', 'intermediate')">
+        <div class="icon">📈</div>
+        <div class="label">Intermediate</div>
+        <div class="sub">6 months – 2 years</div>
+      </div>
+      <div class="option-card" onclick="selectOption(this, 'levelGrid', 'advanced')">
+        <div class="icon">🔱</div>
+        <div class="label">Advanced</div>
+        <div class="sub">2+ years</div>
+      </div>
+      <div class="option-card" onclick="selectOption(this, 'levelGrid', 'athlete')">
+        <div class="icon">⚡</div>
+        <div class="label">Athlete</div>
+        <div class="sub">Competitive level</div>
+      </div>
+    </div>
+
+    <label style="margin: 16px 0 10px; display:block">How many days per week?</label>
+    <div class="option-grid" id="daysGrid">
+      <div class="option-card" onclick="selectOption(this, 'daysGrid', '3')">
+        <div class="icon">3️⃣</div>
+        <div class="label">3 Days</div>
+        <div class="sub">Busy schedule</div>
+      </div>
+      <div class="option-card" onclick="selectOption(this, 'daysGrid', '4')">
+        <div class="icon">4️⃣</div>
+        <div class="label">4 Days</div>
+        <div class="sub">Balanced</div>
+      </div>
+      <div class="option-card" onclick="selectOption(this, 'daysGrid', '5')">
+        <div class="icon">5️⃣</div>
+        <div class="label">5 Days</div>
+        <div class="sub">Dedicated</div>
+      </div>
+      <div class="option-card" onclick="selectOption(this, 'daysGrid', '6')">
+        <div class="icon">6️⃣</div>
+        <div class="label">6 Days</div>
+        <div class="sub">Beast mode</div>
+      </div>
+    </div>
+
+    <label style="margin: 16px 0 10px; display:block">What's Your Diet Type?</label>
+    <div class="option-grid" id="dietGrid">
+      <div class="option-card" onclick="selectOption(this, 'dietGrid', 'nonveg')">
+        <div class="icon">🍗</div>
+        <div class="label">Non-Veg</div>
+        <div class="sub">Chicken, Fish, Eggs</div>
+      </div>
+      <div class="option-card" onclick="selectOption(this, 'dietGrid', 'veg')">
+        <div class="icon">🥦</div>
+        <div class="label">Pure Veg</div>
+        <div class="sub">No eggs, no meat</div>
+      </div>
+      <div class="option-card" onclick="selectOption(this, 'dietGrid', 'eggetarian')">
+        <div class="icon">🥚</div>
+        <div class="label">Veg + Egg</div>
+        <div class="sub">Eggs yes, meat no</div>
+      </div>
+      <div class="option-card" onclick="selectOption(this, 'dietGrid', 'mix')">
+        <div class="icon">🍱</div>
+        <div class="label">Flexible</div>
+        <div class="sub">Everything works</div>
+      </div>
+    </div>
+
+    <div class="error-msg" id="err3">Please select all three options</div>
+    <button class="btn" onclick="generatePlan()">Generate My Plan 🔥</button>
+    <button class="btn btn-outline" onclick="goTo(2)">← Back</button>
+  </div>
+
+  <!-- Screen 4: Result -->
+  <div class="screen" id="screen4">
+    <div id="resultContent"></div>
+    <button class="btn btn-outline" onclick="goTo(1)" style="margin-top:20px">← New Plan</button>
+  </div>
+
+</div>
+
+<script>
+  const selections = { goal: null, level: null, days: null, dietType: null };
+
+  function goTo(n) {
+    // Validate
+    if (n === 2) {
+      const name = document.getElementById('name').value.trim();
+      const age = document.getElementById('age').value;
+      const h = document.getElementById('height').value;
+      const w = document.getElementById('weight').value;
+      const gw = document.getElementById('goalWeight').value;
+      if (!name || !age || !h || !w || !gw) {
+        document.getElementById('err1').style.display = 'block';
+        return;
+      }
+      document.getElementById('err1').style.display = 'none';
+    }
+    if (n === 3) {
+      if (!selections.goal) {
+        document.getElementById('err2').style.display = 'block';
+        return;
+      }
+      document.getElementById('err2').style.display = 'none';
+    }
+
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById('screen' + n).classList.add('active');
+    updateProgress(n);
+    window.scrollTo(0, 0);
+  }
+
+  function updateProgress(n) {
+    for (let i = 1; i <= 4; i++) {
+      const el = document.getElementById('p' + i);
+      el.classList.remove('active', 'done');
+      if (i < n) el.classList.add('done');
+      else if (i === n) el.classList.add('active');
+    }
+  }
+
+  function selectOption(el, gridId, value) {
+    document.querySelectorAll('#' + gridId + ' .option-card').forEach(c => c.classList.remove('selected'));
+    el.classList.add('selected');
+    if (gridId === 'goalGrid') selections.goal = value;
+    if (gridId === 'levelGrid') selections.level = value;
+    if (gridId === 'daysGrid') selections.days = value;
+    if (gridId === 'dietGrid') selections.dietType = value;
+  }
+
+  function generatePlan() {
+    if (!selections.level || !selections.days || !selections.dietType) {
+      document.getElementById('err3').style.display = 'block';
+      return;
+    }
+    document.getElementById('err3').style.display = 'none';
+
+    const name = document.getElementById('name').value.trim();
+    const age = parseInt(document.getElementById('age').value);
+    const height = parseFloat(document.getElementById('height').value);
+    const weight = parseFloat(document.getElementById('weight').value);
+    const goalWeight = parseFloat(document.getElementById('goalWeight').value);
+    const goal = selections.goal;
+    const level = selections.level;
+    const days = parseInt(selections.days);
+
+    // Calculations
+    const bmi = (weight / ((height / 100) ** 2)).toFixed(1);
+    const bmr = Math.round(10 * weight + 6.25 * height - 5 * age + 5);
+    const activityMult = days >= 5 ? 1.725 : days >= 3 ? 1.55 : 1.375;
+    const tdee = Math.round(bmr * activityMult);
+    let calories = tdee;
+    if (goal === 'bulk') calories = tdee + 300;
+    else if (goal === 'cut') calories = tdee - 400;
+
+    const protein = Math.round(weight * (goal === 'bulk' ? 2.2 : 2.0));
+    const fat = Math.round(calories * 0.25 / 9);
+    const carbs = Math.round((calories - protein * 4 - fat * 9) / 4);
+
+    const goalLabels = { bulk: 'Lean Bulk', cut: 'Fat Loss', maintain: 'Maintain', strength: 'Strength' };
+    const levelLabels = { beginner: 'Beginner', intermediate: 'Intermediate', advanced: 'Advanced', athlete: 'Athlete' };
+
+    const workout = getWorkout(goal, level, days);
+    const diet = getDiet(calories, protein, carbs, fat, goal, selections.dietType);
+    const tips = getTips(goal, level);
+    const workoutText = getWorkoutText(goal, level, days);
+    const dietText = getDietText(calories, protein, carbs, fat, goal, selections.dietType);
+
+    // Store globally for copy buttons
+    window._planData = { name, calories, protein, carbs, fat, bmi, days, workoutText, dietText,
+      goal: goalLabels[goal], level: levelLabels[level], dietType: selections.dietType };
+
+    const html = `
+      <div class="result-header">
+        <div class="result-name">Your Plan is Ready, ${name}! 💪</div>
+        <div style="font-size:13px; color:var(--muted); margin-top:4px">${goalLabels[goal]} • ${levelLabels[level]} • ${days} Days/Week</div>
+        <div class="result-stats">
+          <div class="stat-box">
+            <div class="stat-val">${bmi}</div>
+            <div class="stat-label">BMI</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-val">${tdee}</div>
+            <div class="stat-label">TDEE kcal</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-val">${calories}</div>
+            <div class="stat-label">Target kcal</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section open" id="s1">
+        <div class="section-header" onclick="toggleSection('s1')">
+          <span class="section-icon">🏋️</span>
+          <span class="section-title">Workout Plan</span>
+          <span class="section-arrow">▼</span>
+        </div>
+        <div class="section-body">${workout}</div>
+      </div>
+
+      <div class="section" id="s2">
+        <div class="section-header" onclick="toggleSection('s2')">
+          <span class="section-icon">🥗</span>
+          <span class="section-title">Diet Plan</span>
+          <span class="section-arrow">▼</span>
+        </div>
+        <div class="section-body">
+          <div style="margin-bottom:20px">
+            <div class="macro-row">
+              <div class="macro-label"><span>Protein</span><span class="macro-val">${protein}g</span></div>
+              <div class="macro-bar"><div class="macro-fill" style="width:${Math.min(100, protein/3)}%; background:var(--accent)"></div></div>
+            </div>
+            <div class="macro-row">
+              <div class="macro-label"><span>Carbs</span><span class="macro-val">${carbs}g</span></div>
+              <div class="macro-bar"><div class="macro-fill" style="width:${Math.min(100, carbs/5)}%; background:var(--accent2)"></div></div>
+            </div>
+            <div class="macro-row">
+              <div class="macro-label"><span>Fat</span><span class="macro-val">${fat}g</span></div>
+              <div class="macro-bar"><div class="macro-fill" style="width:${Math.min(100, fat/1.5)}%; background:#888"></div></div>
+            </div>
+          </div>
+          ${diet}
+        </div>
+      </div>
+
+      <div class="section" id="s3">
+        <div class="section-header" onclick="toggleSection('s3')">
+          <span class="section-icon">💡</span>
+          <span class="section-title">Key Tips</span>
+          <span class="section-arrow">▼</span>
+        </div>
+        <div class="section-body">${tips}</div>
+      </div>
+
+      <div style="display:flex; flex-direction:column; gap:10px; margin-top:20px;">
+        <button class="share-btn" id="copyWorkoutBtn" onclick="copyWorkout()">
+          🏋️ Copy Workout Plan
+        </button>
+        <button class="share-btn" id="copyDietBtn" onclick="copyDiet()">
+          🥗 Copy Diet Plan
+        </button>
+        <button class="share-btn" id="copyAllBtn" onclick="copyPlan()">
+          📋 Copy Full Plan
+        </button>
+      </div>
+    `;
+
+    document.getElementById('resultContent').innerHTML = html;
+    goTo(4);
+  }
+
+  function toggleSection(id) {
+    document.getElementById(id).classList.toggle('open');
+  }
+
+  function getWorkout(goal, level, days) {
+
+    // Weight guidance per exercise per level
+    const weightGuide = {
+      'Bench Press':        { beginner: 'Start: 20kg (empty bar). Add 2.5kg each week.', intermediate: 'Start: 40–60kg. When 10 reps feel easy, add 2.5kg.', advanced: '70–90kg. Use micro-loading to progress.', athlete: 'Train at RPE 8–9. Work at 80–85% of competition max.' },
+      'Incline DB Press':   { beginner: 'Start: 8–10kg DB each hand. Focus on form first.', intermediate: '15–20kg DB. Last 2 reps should be challenging.', advanced: '25–35kg DB. Try drop sets.', athlete: '35kg+ DB. Progress every session.' },
+      'Incline Press':      { beginner: 'Start: 20kg bar. Focus on form.', intermediate: '40–60kg. Controlled descent is key.', advanced: '70–90kg. Get a spotter for heavy sets.', athlete: 'Work at 80% of your max.' },
+      'Shoulder Press':     { beginner: 'Start: 15–20kg bar or 6–8kg DB. Strict form only.', intermediate: '30–40kg bar or 12–16kg DB.', advanced: '50–60kg bar. Keep 1–2 reps in reserve.', athlete: 'Work at 75–80% of your max.' },
+      'OHP':                { beginner: 'Start: Empty bar (20kg). Always warm up shoulders first.', intermediate: '35–50kg. Keep core tight throughout.', advanced: '60–80kg. Use a belt on heavy sets.', athlete: 'Work at 80% of your max.' },
+      'Lateral Raise':      { beginner: 'Start: 4–5kg DB. No jerking — control the movement.', intermediate: '8–12kg DB. Slow eccentric (3 sec down).', advanced: '14–18kg DB. Try cable version too.', athlete: '18kg+ or cable drop sets.' },
+      'Rear Delt Flye':     { beginner: 'Start: 4kg DB. Full range of motion is critical.', intermediate: '8–10kg DB. Add face pulls too.', advanced: '12–15kg DB or cable.', athlete: 'High rep, light weight — aim for 20+ reps.' },
+      'Tricep Pushdown':    { beginner: 'Start: 10–15kg cable. Keep elbows fixed at your sides.', intermediate: '20–30kg. Try the rope attachment.', advanced: '35–45kg. Superset with overhead extension.', athlete: '45kg+ drop sets.' },
+      'Skull Crusher':      { beginner: 'Start: 10–15kg ez-bar. Elbows completely fixed.', intermediate: '20–30kg. Slow and controlled.', advanced: '35–40kg. Use a spotter.', athlete: '40kg+ superset with close-grip bench.' },
+      'Tricep Dips':        { beginner: 'Start with bodyweight. Use bench dip if too hard.', intermediate: 'Bodyweight + 5–10kg chain/belt.', advanced: '15–25kg added.', athlete: '30kg+ or weighted ring dips.' },
+      'Deadlift':           { beginner: 'Start: Empty bar or 40kg. Form must be PERFECT. Watch a tutorial first.', intermediate: '80–120kg. Only use a belt at 80%+ of max.', advanced: '140–180kg. Use chalk.', athlete: '180kg+. Stay at RPE 8–9 max.' },
+      'Romanian DL':        { beginner: 'Start: 30–40kg. Feel the hamstring stretch.', intermediate: '60–90kg. Slow eccentric (3 sec).', advanced: '100–130kg. No jerking.', athlete: '130kg+. Try deficit variation.' },
+      'Barbell Row':        { beginner: 'Start: 30–40kg. Use a chest support if needed.', intermediate: '60–80kg. Pull to your belly button.', advanced: '90–110kg. Controlled — no body swing.', athlete: '110kg+. Try Pendlay row variation.' },
+      'DB Row':             { beginner: 'Start: 10–12kg. Use bench for support.', intermediate: '18–24kg. Full range of motion.', advanced: '30–40kg. Chest-supported row is better.', athlete: '40kg+. Try Meadows row.' },
+      'Pull-up':            { beginner: 'Use assisted machine or band. If can\'t do 5, do negative reps.', intermediate: 'Bodyweight. Once you hit 10+, add 5kg.', advanced: '10–20kg added weight.', athlete: '25kg+ or weighted archer pull-ups.' },
+      'Lat Pulldown':       { beginner: 'Start: 30–40kg. Don\'t shrug your shoulders.', intermediate: '50–70kg. Full stretch at the top.', advanced: '80–100kg. Slow eccentric.', athlete: '100kg+. Try single-arm variation.' },
+      'Cable Row':          { beginner: 'Start: 30–40kg. Keep back straight.', intermediate: '50–70kg. Squeeze at the end.', advanced: '80–100kg. Use different attachments.', athlete: '100kg+ or unilateral rows.' },
+      'Face Pull':          { beginner: 'Start: 10–15kg. Feel the external rotation.', intermediate: '20–25kg. Use a high attachment point.', advanced: '30–35kg. Superset with lateral raise.', athlete: 'High rep work (20–25 reps) is key.' },
+      'Barbell Curl':       { beginner: 'Start: 15–20kg. Strict form — no body swing.', intermediate: '25–35kg. Slow eccentric (3 sec).', advanced: '40–50kg. Try the 21s technique.', athlete: '50kg+. Add incline DB curl.' },
+      'Hammer Curl':        { beginner: 'Start: 8–10kg DB.', intermediate: '14–18kg DB.', advanced: '20–26kg DB. Try cross-body variation.', athlete: '26kg+. Cable hammer curl.' },
+      'Squat':              { beginner: 'Start: Empty bar (20kg). Spend 1 month on depth and form before adding weight.', intermediate: '60–80kg. Hit parallel depth or below.', advanced: '100–130kg. Belt + wraps on heavy sets.', athlete: '140kg+. Stay at RPE 8–9 max.' },
+      'Leg Press':          { beginner: 'Start: 40–60kg (machine weight). Full range of motion.', intermediate: '100–150kg. Toes slightly out.', advanced: '180–240kg. Slow eccentric.', athlete: '250kg+. Try single-leg variation.' },
+      'Leg Curl':           { beginner: 'Start: 20–25kg. Full range of motion.', intermediate: '35–50kg. Pause at the top.', advanced: '55–70kg. Try single-leg variation.', athlete: '70kg+. Try Nordic curl.' },
+      'Calf Raise':         { beginner: 'Start: Bodyweight. Full stretch at the bottom is essential.', intermediate: '20–40kg added. Slow (2 sec up, 2 sec down).', advanced: '50–80kg. Single-leg variation.', athlete: '80kg+. Try donkey calf raise.' },
+      'Lunges':             { beginner: 'Start with bodyweight. Master balance first.', intermediate: '10–15kg DB each hand.', advanced: '20–30kg DB. Walking lunges.', athlete: '30kg+ or barbell lunges.' },
+      'Plank':              { beginner: 'Start: 20–30 sec. Hips must stay level — not too high or low.', intermediate: '45–60 sec. Try weighted plank with 5–10kg.', advanced: '60–90 sec weighted or plank variations.', athlete: 'RKC plank or weighted vest.' },
+      'Hanging Leg Raise':  { beginner: 'Start with floor leg raises if hanging is too hard.', intermediate: 'Full hang. Start with knees, progress to straight legs.', advanced: 'Toes to bar. Try weighted version.', athlete: 'Toes to bar + rotation.' },
+      'Ab Wheel':           { beginner: 'Start from knees. 5–8 reps is enough.', intermediate: 'Full extension. 3×10.', advanced: '3×15. Try single-arm variation.', athlete: 'Standing ab wheel — extremely challenging.' },
+      'Back Squat':         { beginner: 'Start: Empty bar. Check form on video before adding weight.', intermediate: '60–80kg. Try low-bar position.', advanced: '100–130kg. Use a belt.', athlete: '140kg+. RPE 8–9.' },
+      'Front Squat':        { beginner: 'Start: 20–30kg. Wrist flexibility is essential.', intermediate: '50–70kg. Keep elbows up.', advanced: '90–110kg. Brace your core hard.', athlete: '120kg+.' },
+      'Pause Squat':        { beginner: '50–60% of squat max. 2 sec pause at bottom.', intermediate: '60–70% of max. 3 sec pause.', advanced: '70–75% of max.', athlete: '75–80% of max. Good for competition prep.' },
+      'Close Grip Bench':   { beginner: 'Start: 20–30kg. Keep elbows close to your body.', intermediate: '40–60kg. Squeeze triceps at the top.', advanced: '70–90kg.', athlete: '90kg+.' },
+      'KB Swing':           { beginner: 'Start: 8–12kg KB. Learn the hip hinge drill first.', intermediate: '16–20kg. Power from hips, not arms.', advanced: '24–28kg. Try single-arm.', athlete: '32kg+ or double KB swings.' },
+      'DB Thruster':        { beginner: 'Start: 6–8kg DB. It\'s a squat + press combo.', intermediate: '12–16kg DB.', advanced: '20–24kg DB.', athlete: 'Barbell thruster 40kg+.' },
+      'Chin-up':            { beginner: 'Band-assisted or negative reps.', intermediate: 'Bodyweight × 8–10.', advanced: '10–15kg added.', athlete: '20kg+.' },
+      'Farmer Walk':        { beginner: 'Start: 10–15kg DB each hand. 20m.', intermediate: '20–25kg each. 30–40m.', advanced: '30–40kg each. 40m.', athlete: '45kg+. Try trap bar.' },
+      'Treadmill / Run':    { beginner: 'Brisk walk at 5km/h. 20–30 min.', intermediate: 'Jog at 8–10km/h. 30 min.', advanced: 'Run at 10–12km/h intervals.', athlete: 'LISS 45 min or sprint intervals.' },
+      'HIIT (20 min)':      { beginner: '20 sec on, 40 sec off. 8–10 rounds.', intermediate: '30 sec on, 30 sec off. 10 rounds.', advanced: '40 sec on, 20 sec off. Tabata style.', athlete: 'Max effort sprints.' },
+      'HIIT 15 min':        { beginner: '20 sec on, 40 sec off. 8 rounds.', intermediate: '30 sec on, 30 sec off. 10 rounds.', advanced: 'Tabata — 8 rounds.', athlete: 'Max effort 15 min AMRAP.' },
+      'HIIT 20 min':        { beginner: '20 sec on, 40 sec off. 10 rounds.', intermediate: '30:30 ratio. 10 rounds.', advanced: 'Tabata protocol.', athlete: 'Max effort intervals.' },
+      'Burpees':            { beginner: 'Start: 5–6 reps/set. Skip the jump if too hard.', intermediate: '8–10 reps. Add a jump at the top.', advanced: '12–15 reps. Box jump burpee.', athlete: '15+ reps. Try weighted vest.' },
+      'Cable Flye':         { beginner: 'Start: 5–8kg each side. Feel the stretch fully.', intermediate: '10–15kg each. Controlled arc.', advanced: '15–20kg. Try high-to-low variation.', athlete: '20kg+. Work from multiple angles.' },
+      'Superset: Curl+Extension': { beginner: '8–10kg curl, 10–12kg pushdown. Rest between supersets.', intermediate: '14–16kg curl, 20–25kg pushdown.', advanced: 'Go heavy on both. Minimal rest.', athlete: 'Drop sets on both exercises.' },
+      'Core Work':          { beginner: 'Plank 30sec + 15 crunches. 3 sets.', intermediate: 'Plank 60sec + hanging knee raises.', advanced: 'Ab wheel + toes to bar.', athlete: 'Dragon flag + weighted variations.' },
+    };
+
+    const defaultGuide = {
+      beginner: 'First time: Start light, focus on form.',
+      intermediate: 'When 12 reps feel easy, increase weight by 5%.',
+      advanced: 'Progressive overload: Increase weight or reps every 1–2 weeks.',
+      athlete: 'Use RPE and percentage-based training.'
+    };
+
+    const plans = {
+      3: {
+        bulk: [
+          { day: 'Din 1 — Push (Chest, Shoulders, Triceps)', exercises: [
+            { name: 'Bench Press', sets: '4×8-10' }, { name: 'Incline DB Press', sets: '3×10-12' },
+            { name: 'Shoulder Press', sets: '4×8-10' }, { name: 'Lateral Raise', sets: '3×12-15' },
+            { name: 'Tricep Pushdown', sets: '3×12' }
+          ]},
+          { day: 'Din 2 — Pull (Back, Biceps)', exercises: [
+            { name: 'Deadlift', sets: '4×5-6' }, { name: 'Barbell Row', sets: '4×8-10' },
+            { name: 'Lat Pulldown', sets: '3×10-12' }, { name: 'Face Pull', sets: '3×15' },
+            { name: 'Barbell Curl', sets: '3×10-12' }
+          ]},
+          { day: 'Din 3 — Legs + Core', exercises: [
+            { name: 'Squat', sets: '4×8-10' }, { name: 'Romanian DL', sets: '3×10' },
+            { name: 'Leg Press', sets: '3×12' }, { name: 'Leg Curl', sets: '3×12' },
+            { name: 'Calf Raise', sets: '4×15' }, { name: 'Plank', sets: '3×45sec' }
+          ]}
+        ],
+        cut: [
+          { day: 'Din 1 — Upper Body', exercises: [
+            { name: 'Bench Press', sets: '4×12-15' }, { name: 'DB Row', sets: '4×12' },
+            { name: 'Shoulder Press', sets: '3×12' }, { name: 'Lat Pulldown', sets: '3×10-12' },
+            { name: 'Superset: Curl+Extension', sets: '3×12' }
+          ]},
+          { day: 'Din 2 — Lower + Cardio', exercises: [
+            { name: 'Squat', sets: '4×12-15' }, { name: 'Lunges', sets: '3×12 each' },
+            { name: 'Leg Curl', sets: '3×12' }, { name: 'Calf Raise', sets: '4×20' },
+            { name: 'HIIT (20 min)', sets: '—' }
+          ]},
+          { day: 'Din 3 — Full Body Circuit', exercises: [
+            { name: 'Deadlift', sets: '3×8' }, { name: 'DB Thruster', sets: '3×12' },
+            { name: 'Chin-up', sets: '3×8-10' }, { name: 'KB Swing', sets: '3×15' },
+            { name: 'Burpees', sets: '3×10' }
+          ]}
+        ],
+        maintain: [
+          { day: 'Din 1 — Push', exercises: [
+            { name: 'Bench Press', sets: '3×10' }, { name: 'Shoulder Press', sets: '3×10' },
+            { name: 'Lateral Raise', sets: '3×12' }, { name: 'Tricep Dips', sets: '3×12' }
+          ]},
+          { day: 'Din 2 — Pull + Legs', exercises: [
+            { name: 'Pull-up', sets: '3×8-10' }, { name: 'Barbell Row', sets: '3×10' },
+            { name: 'Squat', sets: '3×10' }, { name: 'Romanian DL', sets: '3×10' },
+            { name: 'Barbell Curl', sets: '3×12' }
+          ]},
+          { day: 'Din 3 — Cardio + Core', exercises: [
+            { name: 'Treadmill / Run', sets: '30 min' }, { name: 'Plank', sets: '3×60sec' },
+            { name: 'Ab Wheel', sets: '3×10' }, { name: 'Hanging Leg Raise', sets: '3×12' }
+          ]}
+        ],
+        strength: [
+          { day: 'Din 1 — Squat Day', exercises: [
+            { name: 'Back Squat', sets: '5×5' }, { name: 'Pause Squat', sets: '3×3' },
+            { name: 'Leg Press', sets: '3×8' }, { name: 'Core Work', sets: '3 sets' }
+          ]},
+          { day: 'Din 2 — Bench Day', exercises: [
+            { name: 'Bench Press', sets: '5×5' }, { name: 'Close Grip Bench', sets: '3×6' },
+            { name: 'DB Row', sets: '4×8' }, { name: 'Face Pull', sets: '3×15' }
+          ]},
+          { day: 'Din 3 — Deadlift Day', exercises: [
+            { name: 'Deadlift', sets: '5×3-5' }, { name: 'Romanian DL', sets: '3×6' },
+            { name: 'Pull-up', sets: '4×6-8' }, { name: 'Barbell Row', sets: '3×8' }
+          ]}
+        ]
+      },
+      4: {
+        bulk: [
+          { day: 'Din 1 — Chest + Triceps', exercises: [
+            { name: 'Bench Press', sets: '4×8-10' }, { name: 'Incline Press', sets: '4×10' },
+            { name: 'Cable Flye', sets: '3×12-15' }, { name: 'Skull Crusher', sets: '3×12' },
+            { name: 'Tricep Pushdown', sets: '3×15' }
+          ]},
+          { day: 'Din 2 — Back + Biceps', exercises: [
+            { name: 'Deadlift', sets: '4×6' }, { name: 'Barbell Row', sets: '4×8' },
+            { name: 'Pull-up', sets: '3×8-10' }, { name: 'Cable Row', sets: '3×12' },
+            { name: 'Barbell Curl', sets: '3×10' }, { name: 'Hammer Curl', sets: '3×10' }
+          ]},
+          { day: 'Din 3 — Legs', exercises: [
+            { name: 'Squat', sets: '5×5-8' }, { name: 'Leg Press', sets: '4×12' },
+            { name: 'Romanian DL', sets: '3×10' }, { name: 'Leg Curl', sets: '3×12' },
+            { name: 'Calf Raise', sets: '5×15-20' }
+          ]},
+          { day: 'Din 4 — Shoulders + Core', exercises: [
+            { name: 'OHP', sets: '4×8-10' }, { name: 'Lateral Raise', sets: '4×12-15' },
+            { name: 'Rear Delt Flye', sets: '3×15' }, { name: 'Face Pull', sets: '3×15' },
+            { name: 'Plank', sets: '3×60sec' }, { name: 'Hanging Leg Raise', sets: '3×12' }
+          ]}
+        ],
+        cut: [
+          { day: 'Din 1 — Push + Cardio', exercises: [
+            { name: 'Incline Press', sets: '4×12' }, { name: 'Shoulder Press', sets: '3×12' },
+            { name: 'Lateral Raise', sets: '3×15' }, { name: 'Tricep Pushdown', sets: '3×15' },
+            { name: 'HIIT 15 min', sets: '—' }
+          ]},
+          { day: 'Din 2 — Pull', exercises: [
+            { name: 'Deadlift', sets: '3×8' }, { name: 'Pull-up', sets: '4×8-10' },
+            { name: 'DB Row', sets: '4×12' }, { name: 'Face Pull', sets: '3×15' },
+            { name: 'Barbell Curl', sets: '3×12' }
+          ]},
+          { day: 'Din 3 — Legs + HIIT', exercises: [
+            { name: 'Squat', sets: '4×12' }, { name: 'Lunges', sets: '3×12 each' },
+            { name: 'Leg Curl', sets: '3×12' }, { name: 'Calf Raise', sets: '4×20' },
+            { name: 'HIIT 20 min', sets: '—' }
+          ]},
+          { day: 'Din 4 — Full Body', exercises: [
+            { name: 'Bench Press', sets: '3×10' }, { name: 'Barbell Row', sets: '3×10' },
+            { name: 'DB Thruster', sets: '3×12' }, { name: 'Chin-up', sets: '3×8' },
+            { name: 'Farmer Walk', sets: '3×40m' }
+          ]}
+        ],
+        maintain: [
+          { day: 'Din 1 — Upper A', exercises: [
+            { name: 'Bench Press', sets: '3×10' }, { name: 'Pull-up', sets: '3×8' },
+            { name: 'Shoulder Press', sets: '3×10' }, { name: 'Barbell Row', sets: '3×10' },
+            { name: 'Face Pull', sets: '3×15' }
+          ]},
+          { day: 'Din 2 — Lower A', exercises: [
+            { name: 'Squat', sets: '4×10' }, { name: 'Romanian DL', sets: '3×10' },
+            { name: 'Leg Press', sets: '3×12' }, { name: 'Calf Raise', sets: '3×15' },
+            { name: 'Plank', sets: '3×45sec' }
+          ]},
+          { day: 'Din 3 — Upper B', exercises: [
+            { name: 'Incline Press', sets: '3×10' }, { name: 'Cable Row', sets: '3×12' },
+            { name: 'Lateral Raise', sets: '3×12' }, { name: 'Barbell Curl', sets: '3×10' },
+            { name: 'Tricep Pushdown', sets: '3×12' }
+          ]},
+          { day: 'Din 4 — Lower B + Core', exercises: [
+            { name: 'Deadlift', sets: '3×8' }, { name: 'Leg Curl', sets: '3×12' },
+            { name: 'Lunges', sets: '3×10 each' }, { name: 'Calf Raise', sets: '3×15' },
+            { name: 'Hanging Leg Raise', sets: '3×12' }
+          ]}
+        ],
+        strength: [
+          { day: 'Din 1 — Heavy Squat', exercises: [
+            { name: 'Back Squat', sets: '5×5' }, { name: 'Pause Squat', sets: '3×3' },
+            { name: 'Leg Press', sets: '3×8' }, { name: 'Leg Curl', sets: '3×10' }
+          ]},
+          { day: 'Din 2 — Heavy Bench', exercises: [
+            { name: 'Bench Press', sets: '5×5' }, { name: 'Close Grip Bench', sets: '3×6' },
+            { name: 'OHP', sets: '3×5' }, { name: 'DB Row', sets: '4×8' }
+          ]},
+          { day: 'Din 3 — Accessory + Shoulders', exercises: [
+            { name: 'Romanian DL', sets: '4×8' }, { name: 'Pull-up', sets: '4×6' },
+            { name: 'Lateral Raise', sets: '3×12' }, { name: 'Face Pull', sets: '3×15' },
+            { name: 'Barbell Curl', sets: '3×10' }, { name: 'Tricep Pushdown', sets: '3×12' }
+          ]},
+          { day: 'Din 4 — Heavy Deadlift', exercises: [
+            { name: 'Deadlift', sets: '5×3' }, { name: 'Barbell Row', sets: '4×5' },
+            { name: 'Front Squat', sets: '3×5' }, { name: 'Core Work', sets: '3 sets' }
+          ]}
+        ]
+      },
+      5: {
+        bulk: [
+          { day: 'Din 1 — Push A (Chest Focus)', exercises: [
+            { name: 'Bench Press', sets: '4×6-8' }, { name: 'Incline DB Press', sets: '4×10' },
+            { name: 'Cable Flye', sets: '3×12-15' }, { name: 'Tricep Pushdown', sets: '4×12' },
+            { name: 'Skull Crusher', sets: '3×10' }
+          ]},
+          { day: 'Din 2 — Pull A (Back Focus)', exercises: [
+            { name: 'Deadlift', sets: '4×5' }, { name: 'Barbell Row', sets: '4×8' },
+            { name: 'Pull-up', sets: '4×8-10' }, { name: 'Face Pull', sets: '3×15' },
+            { name: 'Barbell Curl', sets: '3×10' }, { name: 'Hammer Curl', sets: '3×10' }
+          ]},
+          { day: 'Din 3 — Legs', exercises: [
+            { name: 'Squat', sets: '5×5-8' }, { name: 'Romanian DL', sets: '4×10' },
+            { name: 'Leg Press', sets: '4×12' }, { name: 'Leg Curl', sets: '3×12' },
+            { name: 'Calf Raise', sets: '5×15-20' }, { name: 'Plank', sets: '3×60sec' }
+          ]},
+          { day: 'Din 4 — Push B (Shoulders Focus)', exercises: [
+            { name: 'OHP', sets: '4×8-10' }, { name: 'Incline Press', sets: '3×10' },
+            { name: 'Lateral Raise', sets: '4×12-15' }, { name: 'Rear Delt Flye', sets: '3×15' },
+            { name: 'Tricep Dips', sets: '3×12' }
+          ]},
+          { day: 'Din 5 — Pull B (Arms + Back Volume)', exercises: [
+            { name: 'Cable Row', sets: '4×12' }, { name: 'Lat Pulldown', sets: '4×10-12' },
+            { name: 'Barbell Curl', sets: '4×10' }, { name: 'Hammer Curl', sets: '3×12' },
+            { name: 'Face Pull', sets: '3×15' }, { name: 'Hanging Leg Raise', sets: '3×12' }
+          ]}
+        ],
+        cut: [
+          { day: 'Din 1 — Upper Push + Cardio', exercises: [
+            { name: 'Bench Press', sets: '4×12' }, { name: 'Shoulder Press', sets: '3×12' },
+            { name: 'Lateral Raise', sets: '3×15' }, { name: 'Tricep Pushdown', sets: '3×15' },
+            { name: 'HIIT 15 min', sets: '—' }
+          ]},
+          { day: 'Din 2 — Pull', exercises: [
+            { name: 'Deadlift', sets: '3×6' }, { name: 'Pull-up', sets: '4×8-10' },
+            { name: 'DB Row', sets: '4×12' }, { name: 'Face Pull', sets: '3×15' },
+            { name: 'Barbell Curl', sets: '3×12' }
+          ]},
+          { day: 'Din 3 — Legs', exercises: [
+            { name: 'Squat', sets: '4×12' }, { name: 'Lunges', sets: '3×12 each' },
+            { name: 'Romanian DL', sets: '3×12' }, { name: 'Leg Curl', sets: '3×12' },
+            { name: 'Calf Raise', sets: '4×20' }, { name: 'HIIT 20 min', sets: '—' }
+          ]},
+          { day: 'Din 4 — Shoulders + Arms', exercises: [
+            { name: 'OHP', sets: '3×12' }, { name: 'Lateral Raise', sets: '3×15' },
+            { name: 'Rear Delt Flye', sets: '3×15' }, { name: 'Barbell Curl', sets: '3×12' },
+            { name: 'Tricep Pushdown', sets: '3×15' }
+          ]},
+          { day: 'Din 5 — Full Body + HIIT', exercises: [
+            { name: 'DB Thruster', sets: '3×12' }, { name: 'Chin-up', sets: '3×8' },
+            { name: 'KB Swing', sets: '3×15' }, { name: 'Farmer Walk', sets: '3×40m' },
+            { name: 'Burpees', sets: '3×10' }
+          ]}
+        ],
+        maintain: [
+          { day: 'Din 1 — Push', exercises: [
+            { name: 'Bench Press', sets: '3×10' }, { name: 'OHP', sets: '3×10' },
+            { name: 'Lateral Raise', sets: '3×12' }, { name: 'Tricep Pushdown', sets: '3×12' }
+          ]},
+          { day: 'Din 2 — Pull', exercises: [
+            { name: 'Deadlift', sets: '3×6' }, { name: 'Pull-up', sets: '3×8' },
+            { name: 'Cable Row', sets: '3×12' }, { name: 'Barbell Curl', sets: '3×10' },
+            { name: 'Face Pull', sets: '3×15' }
+          ]},
+          { day: 'Din 3 — Legs', exercises: [
+            { name: 'Squat', sets: '4×10' }, { name: 'Romanian DL', sets: '3×10' },
+            { name: 'Leg Press', sets: '3×12' }, { name: 'Leg Curl', sets: '3×12' },
+            { name: 'Calf Raise', sets: '4×15' }
+          ]},
+          { day: 'Din 4 — Upper Hypertrophy', exercises: [
+            { name: 'Incline Press', sets: '3×12' }, { name: 'DB Row', sets: '3×12' },
+            { name: 'Lateral Raise', sets: '3×15' }, { name: 'Hammer Curl', sets: '3×12' },
+            { name: 'Skull Crusher', sets: '3×12' }
+          ]},
+          { day: 'Din 5 — Cardio + Core', exercises: [
+            { name: 'Treadmill / Run', sets: '30 min' }, { name: 'Plank', sets: '3×60sec' },
+            { name: 'Hanging Leg Raise', sets: '3×12' }, { name: 'Ab Wheel', sets: '3×10' }
+          ]}
+        ],
+        strength: [
+          { day: 'Din 1 — Heavy Squat', exercises: [
+            { name: 'Back Squat', sets: '5×5' }, { name: 'Pause Squat', sets: '3×3' },
+            { name: 'Leg Press', sets: '3×8' }, { name: 'Leg Curl', sets: '3×8' }
+          ]},
+          { day: 'Din 2 — Heavy Bench', exercises: [
+            { name: 'Bench Press', sets: '5×5' }, { name: 'Close Grip Bench', sets: '3×6' },
+            { name: 'DB Row', sets: '4×8' }, { name: 'Face Pull', sets: '3×15' }
+          ]},
+          { day: 'Din 3 — Accessory Volume', exercises: [
+            { name: 'Romanian DL', sets: '4×8' }, { name: 'Pull-up', sets: '4×8' },
+            { name: 'Incline Press', sets: '3×10' }, { name: 'Lateral Raise', sets: '3×12' },
+            { name: 'Barbell Curl', sets: '3×10' }, { name: 'Tricep Pushdown', sets: '3×12' }
+          ]},
+          { day: 'Din 4 — Heavy Deadlift', exercises: [
+            { name: 'Deadlift', sets: '5×3' }, { name: 'Barbell Row', sets: '4×5' },
+            { name: 'Front Squat', sets: '3×5' }, { name: 'Core Work', sets: '3 sets' }
+          ]},
+          { day: 'Din 5 — OHP + Upper Accessory', exercises: [
+            { name: 'OHP', sets: '5×5' }, { name: 'Bench Press', sets: '3×8' },
+            { name: 'Cable Row', sets: '4×10' }, { name: 'Lateral Raise', sets: '3×12' },
+            { name: 'Face Pull', sets: '3×15' }
+          ]}
+        ]
+      },
+      6: {
+        bulk: [
+          { day: 'Din 1 — Push A', exercises: [
+            { name: 'Bench Press', sets: '4×6-8' }, { name: 'Incline DB Press', sets: '4×10' },
+            { name: 'Cable Flye', sets: '3×15' }, { name: 'Tricep Pushdown', sets: '4×12' }
+          ]},
+          { day: 'Din 2 — Pull A', exercises: [
+            { name: 'Deadlift', sets: '4×5' }, { name: 'Barbell Row', sets: '4×8' },
+            { name: 'Pull-up', sets: '4×8-10' }, { name: 'Barbell Curl', sets: '4×10' }
+          ]},
+          { day: 'Din 3 — Legs A', exercises: [
+            { name: 'Squat', sets: '5×5' }, { name: 'Romanian DL', sets: '4×10' },
+            { name: 'Leg Press', sets: '4×12' }, { name: 'Calf Raise', sets: '5×15' }
+          ]},
+          { day: 'Din 4 — Push B', exercises: [
+            { name: 'OHP', sets: '4×8' }, { name: 'Incline Press', sets: '4×10' },
+            { name: 'Lateral Raise', sets: '4×15' }, { name: 'Skull Crusher', sets: '3×12' }
+          ]},
+          { day: 'Din 5 — Pull B', exercises: [
+            { name: 'Cable Row', sets: '4×12' }, { name: 'Lat Pulldown', sets: '4×10' },
+            { name: 'Face Pull', sets: '3×15' }, { name: 'Hammer Curl', sets: '4×12' }
+          ]},
+          { day: 'Din 6 — Legs B + Core', exercises: [
+            { name: 'Back Squat', sets: '4×8' }, { name: 'Leg Curl', sets: '4×12' },
+            { name: 'Lunges', sets: '3×12 each' }, { name: 'Calf Raise', sets: '4×20' },
+            { name: 'Hanging Leg Raise', sets: '3×15' }
+          ]}
+        ],
+        cut: [
+          { day: 'Din 1 — Push A + Cardio', exercises: [
+            { name: 'Bench Press', sets: '4×12' }, { name: 'Shoulder Press', sets: '3×12' },
+            { name: 'Lateral Raise', sets: '3×15' }, { name: 'HIIT 15 min', sets: '—' }
+          ]},
+          { day: 'Din 2 — Pull A', exercises: [
+            { name: 'Deadlift', sets: '3×6' }, { name: 'Pull-up', sets: '4×10' },
+            { name: 'Face Pull', sets: '3×15' }, { name: 'Barbell Curl', sets: '3×12' }
+          ]},
+          { day: 'Din 3 — Legs A', exercises: [
+            { name: 'Squat', sets: '4×12' }, { name: 'Romanian DL', sets: '3×12' },
+            { name: 'Calf Raise', sets: '4×20' }, { name: 'HIIT 20 min', sets: '—' }
+          ]},
+          { day: 'Din 4 — Push B', exercises: [
+            { name: 'OHP', sets: '3×12' }, { name: 'Incline Press', sets: '3×12' },
+            { name: 'Rear Delt Flye', sets: '3×15' }, { name: 'Tricep Pushdown', sets: '3×15' }
+          ]},
+          { day: 'Din 5 — Pull B + Arms', exercises: [
+            { name: 'DB Row', sets: '4×12' }, { name: 'Lat Pulldown', sets: '3×12' },
+            { name: 'Barbell Curl', sets: '3×12' }, { name: 'Hammer Curl', sets: '3×12' }
+          ]},
+          { day: 'Din 6 — Legs B + Core', exercises: [
+            { name: 'Lunges', sets: '4×12 each' }, { name: 'Leg Curl', sets: '3×12' },
+            { name: 'Leg Press', sets: '3×15' }, { name: 'Plank', sets: '3×60sec' },
+            { name: 'Hanging Leg Raise', sets: '3×12' }
+          ]}
+        ],
+        maintain: [
+          { day: 'Din 1 — Push A', exercises: [
+            { name: 'Bench Press', sets: '3×10' }, { name: 'OHP', sets: '3×10' }, { name: 'Lateral Raise', sets: '3×12' }
+          ]},
+          { day: 'Din 2 — Pull A', exercises: [
+            { name: 'Deadlift', sets: '3×6' }, { name: 'Pull-up', sets: '3×8' }, { name: 'Barbell Curl', sets: '3×10' }
+          ]},
+          { day: 'Din 3 — Legs A', exercises: [
+            { name: 'Squat', sets: '3×10' }, { name: 'Romanian DL', sets: '3×10' }, { name: 'Calf Raise', sets: '3×15' }
+          ]},
+          { day: 'Din 4 — Push B', exercises: [
+            { name: 'Incline Press', sets: '3×10' }, { name: 'Shoulder Press', sets: '3×10' }, { name: 'Tricep Pushdown', sets: '3×12' }
+          ]},
+          { day: 'Din 5 — Pull B', exercises: [
+            { name: 'Cable Row', sets: '3×12' }, { name: 'Lat Pulldown', sets: '3×12' }, { name: 'Face Pull', sets: '3×15' }
+          ]},
+          { day: 'Din 6 — Legs B + Core', exercises: [
+            { name: 'Leg Press', sets: '3×12' }, { name: 'Leg Curl', sets: '3×12' }, { name: 'Plank', sets: '3×60sec' }, { name: 'Ab Wheel', sets: '3×10' }
+          ]}
+        ],
+        strength: [
+          { day: 'Din 1 — Heavy Squat', exercises: [
+            { name: 'Back Squat', sets: '5×5' }, { name: 'Pause Squat', sets: '3×3' }, { name: 'Leg Curl', sets: '3×8' }
+          ]},
+          { day: 'Din 2 — Heavy Bench', exercises: [
+            { name: 'Bench Press', sets: '5×5' }, { name: 'Close Grip Bench', sets: '3×6' }, { name: 'DB Row', sets: '4×8' }
+          ]},
+          { day: 'Din 3 — Heavy Deadlift', exercises: [
+            { name: 'Deadlift', sets: '5×3' }, { name: 'Barbell Row', sets: '4×5' }, { name: 'Front Squat', sets: '3×5' }
+          ]},
+          { day: 'Din 4 — Squat Accessory', exercises: [
+            { name: 'Romanian DL', sets: '4×8' }, { name: 'Leg Press', sets: '4×10' }, { name: 'Calf Raise', sets: '4×15' }, { name: 'Core Work', sets: '3 sets' }
+          ]},
+          { day: 'Din 5 — Bench + OHP Accessory', exercises: [
+            { name: 'OHP', sets: '4×5' }, { name: 'Incline Press', sets: '3×8' }, { name: 'Lateral Raise', sets: '3×12' }, { name: 'Tricep Pushdown', sets: '3×12' }
+          ]},
+          { day: 'Din 6 — Pull Accessory', exercises: [
+            { name: 'Pull-up', sets: '4×8' }, { name: 'Cable Row', sets: '4×10' }, { name: 'Face Pull', sets: '3×15' }, { name: 'Barbell Curl', sets: '3×10' }
+          ]}
+        ]
+      }
+    };
+
+    const key = days <= 3 ? 3 : days === 4 ? 4 : days === 5 ? 5 : 6;
+    const goalKey = goal || 'bulk';
+    const plan = plans[key][goalKey] || plans[key].bulk;
+
+    return plan.map(day => `
+      <div class="day-block">
+        <div class="day-title">${day.day}</div>
+        ${day.exercises.map(ex => {
+          const guide = weightGuide[ex.name];
+          const hint = guide ? guide[level] : defaultGuide[level];
+          return `
+            <div class="exercise-row" style="flex-direction:column; align-items:flex-start; gap:4px; padding:10px 0;">
+              <div style="display:flex; justify-content:space-between; width:100%; align-items:center;">
+                <span class="ex-name">${ex.name}</span>
+                <span class="ex-sets">${ex.sets}</span>
+              </div>
+              ${hint ? `<span style="font-size:11px; color:var(--muted); line-height:1.4;">💡 ${hint}</span>` : ''}
+            </div>
+          `;
+        }).join('')}
+      </div>
+    `).join('');
+  }
+
+  function getDiet(cal, protein, carbs, fat, goal, dietType) {
+
+    const pSrc = {
+      nonveg: { morning: 'Boiled Eggs (3-4)', lunch: 'Chicken Breast (150g)', dinner: 'Chicken / Fish (150g)', post: 'Chicken + Rice', snack: 'Boiled Egg (1-2)' },
+      veg:    { morning: 'Paneer (100g) / Sprouts', lunch: 'Paneer / Rajma / Chickpeas', dinner: 'Dal + Paneer', post: 'Paneer + Rice', snack: 'Chickpeas / Makhana' },
+      eggetarian: { morning: 'Boiled Eggs (3-4)', lunch: 'Eggs / Paneer / Dal', dinner: 'Dal + Egg Omelette', post: 'Egg Whites + Rice', snack: 'Boiled Egg / Chickpeas' },
+      mix:    { morning: 'Eggs (3) / Paneer', lunch: 'Chicken / Paneer / Dal', dinner: 'Chicken / Fish / Dal', post: 'Chicken/Paneer + Rice', snack: 'Egg / Chickpeas / Makhana' }
+    };
+    const p = pSrc[dietType] || pSrc.mix;
+
+    const meals = goal === 'bulk' ? [
+      { time: 'Morning 7–8 AM (Pre-Workout)', items: [
+        { name: 'Oats + Banana + Milk', cal: Math.round(cal * 0.2) },
+        { name: p.morning, cal: '' }
+      ]},
+      { time: 'Post-Workout (10–11 AM)', items: [
+        { name: 'Whey Protein (if available)', cal: '' },
+        { name: p.post + ' + Dal', cal: Math.round(cal * 0.3) }
+      ]},
+      { time: 'Lunch 1–2 PM', items: [
+        { name: '2–3 Rotis + ' + p.lunch, cal: Math.round(cal * 0.25) },
+        { name: 'Salad + Yogurt', cal: '' }
+      ]},
+      { time: 'Evening Snack 5–6 PM', items: [
+        { name: p.snack, cal: Math.round(cal * 0.1) },
+        { name: 'Fruit (Banana / Apple)', cal: '' }
+      ]},
+      { time: 'Dinner 8–9 PM', items: [
+        { name: 'Rice/Roti + ' + p.dinner, cal: Math.round(cal * 0.15) },
+        { name: 'Yogurt or Milk before bed', cal: '' }
+      ]}
+    ] : goal === 'cut' ? [
+      { time: 'Morning 7–8 AM', items: [
+        { name: p.morning + ' + Veggies', cal: Math.round(cal * 0.2) },
+        { name: 'Black Coffee (no sugar)', cal: '' }
+      ]},
+      { time: 'Post-Workout', items: [
+        { name: p.post + ' (small portion)', cal: Math.round(cal * 0.25) },
+        { name: 'Side salad', cal: '' }
+      ]},
+      { time: 'Lunch', items: [
+        { name: '1–2 Rotis + ' + p.lunch + ' + Veggies', cal: Math.round(cal * 0.25) },
+        { name: 'Yogurt (no sugar)', cal: '' }
+      ]},
+      { time: 'Evening Snack', items: [
+        { name: p.snack, cal: Math.round(cal * 0.1) },
+        { name: 'Green Tea', cal: '' }
+      ]},
+      { time: 'Dinner', items: [
+        { name: p.dinner + ' + Veggies only', cal: Math.round(cal * 0.2) },
+        { name: 'Avoid carbs at night', cal: '' }
+      ]}
+    ] : [
+      { time: 'Morning', items: [{ name: 'Oats + ' + p.morning, cal: Math.round(cal * 0.25) }] },
+      { time: 'Lunch', items: [{ name: 'Rice + ' + p.lunch + ' + Veggies', cal: Math.round(cal * 0.35) }] },
+      { time: 'Snack', items: [{ name: p.snack + ' + Fruit', cal: Math.round(cal * 0.1) }] },
+      { time: 'Dinner', items: [{ name: 'Roti + ' + p.dinner + ' + Yogurt', cal: Math.round(cal * 0.3) }] }
+    ];
+
+    return meals.map(m => `
+      <div class="meal-block">
+        <div class="meal-time">${m.time}</div>
+        ${m.items.map(i => `
+          <div class="meal-item">
+            <span>${i.name}</span>
+            <span class="meal-cal">${i.cal ? '~' + i.cal + ' kcal' : ''}</span>
+          </div>
+        `).join('')}
+      </div>
+    `).join('');
+  }
+
+  function getTips(goal, level) {
+    const allTips = {
+      bulk: [
+        'Progressive overload — increase weight or reps every week. Without this, muscle won\'t grow.',
+        'Hit your protein target daily — if you miss it, the bulk is wasted.',
+        'Sleep 7–8 hours — muscle is built during sleep, not in the gym.',
+        'Avoid dirty bulk — lean bulk means slower fat gain but better quality muscle.',
+        'Prioritize compound movements — squat, deadlift, bench, row. Isolation comes after.'
+      ],
+      cut: [
+        'Maintain a calorie deficit of 300–400 kcal/day. Cut too much and you\'ll lose muscle.',
+        'Keeping protein high is non-negotiable during a cut — protect your muscle.',
+        'Increase cardio gradually — doing too much too fast leads to fatigue and burnout.',
+        'Weigh yourself weekly — 0.5kg/week loss is the ideal rate.',
+        'Cut out processed food and sugar completely during a cut phase.'
+      ],
+      maintain: [
+        'Consistency is everything — both workout and diet.',
+        'Take a deload week once a month — let your body fully recover.',
+        'Add new exercises during maintenance — your body needs fresh challenges.',
+        'Manage sleep and stress — high cortisol leads to fat gain even at maintenance.'
+      ],
+      strength: [
+        'Train at RPE 8–9 — stay 1–2 reps from failure for strength gains.',
+        'Form must be perfect — ego lifting ends careers. Injury is not worth it.',
+        'Deload every 4–6 weeks — drop to 50% weight and let your CNS recover.',
+        'Sleep 8–9 hours — most strength gains happen overnight.',
+        'Consider creatine — the most evidence-backed supplement available.'
+      ]
+    };
+
+    const tips = allTips[goal] || allTips.bulk;
+    return tips.map((t, i) => `
+      <div class="tip-item">
+        <span class="tip-num">${i + 1}</span>
+        <span>${t}</span>
+      </div>
+    `).join('');
+  }
+
+  function getWorkoutText(goal, level, days) {
+    const key = days <= 3 ? 3 : days === 4 ? 4 : days === 5 ? 5 : 6;
+    const plans = {
+      3: { bulk: [
+        { day: 'Day 1 — Push', exercises: [{ name: 'Bench Press', sets: '4×8-10' }, { name: 'Incline DB Press', sets: '3×10-12' }, { name: 'Shoulder Press', sets: '4×8-10' }, { name: 'Lateral Raise', sets: '3×12-15' }, { name: 'Tricep Pushdown', sets: '3×12' }] },
+        { day: 'Day 2 — Pull', exercises: [{ name: 'Deadlift', sets: '4×5-6' }, { name: 'Barbell Row', sets: '4×8-10' }, { name: 'Lat Pulldown', sets: '3×10-12' }, { name: 'Face Pull', sets: '3×15' }, { name: 'Barbell Curl', sets: '3×10-12' }] },
+        { day: 'Day 3 — Legs + Core', exercises: [{ name: 'Squat', sets: '4×8-10' }, { name: 'Romanian DL', sets: '3×10' }, { name: 'Leg Press', sets: '3×12' }, { name: 'Leg Curl', sets: '3×12' }, { name: 'Calf Raise', sets: '4×15' }, { name: 'Plank', sets: '3×45sec' }] }
+      ], cut: [
+        { day: 'Day 1 — Upper Body', exercises: [{ name: 'Bench Press', sets: '4×12-15' }, { name: 'DB Row', sets: '4×12' }, { name: 'Shoulder Press', sets: '3×12' }, { name: 'Lat Pulldown', sets: '3×10-12' }] },
+        { day: 'Day 2 — Lower + Cardio', exercises: [{ name: 'Squat', sets: '4×12-15' }, { name: 'Lunges', sets: '3×12 each' }, { name: 'Leg Curl', sets: '3×12' }, { name: 'HIIT (20 min)', sets: '—' }] },
+        { day: 'Day 3 — Full Body', exercises: [{ name: 'Deadlift', sets: '3×8' }, { name: 'DB Thruster', sets: '3×12' }, { name: 'Chin-up', sets: '3×8-10' }, { name: 'Burpees', sets: '3×10' }] }
+      ], maintain: [
+        { day: 'Day 1 — Push', exercises: [{ name: 'Bench Press', sets: '3×10' }, { name: 'Shoulder Press', sets: '3×10' }, { name: 'Lateral Raise', sets: '3×12' }] },
+        { day: 'Day 2 — Pull + Legs', exercises: [{ name: 'Pull-up', sets: '3×8-10' }, { name: 'Barbell Row', sets: '3×10' }, { name: 'Squat', sets: '3×10' }] },
+        { day: 'Day 3 — Cardio + Core', exercises: [{ name: 'Treadmill / Run', sets: '30 min' }, { name: 'Plank', sets: '3×60sec' }, { name: 'Ab Wheel', sets: '3×10' }] }
+      ], strength: [
+        { day: 'Day 1 — Squat', exercises: [{ name: 'Back Squat', sets: '5×5' }, { name: 'Pause Squat', sets: '3×3' }, { name: 'Leg Press', sets: '3×8' }] },
+        { day: 'Day 2 — Bench', exercises: [{ name: 'Bench Press', sets: '5×5' }, { name: 'Close Grip Bench', sets: '3×6' }, { name: 'DB Row', sets: '4×8' }] },
+        { day: 'Day 3 — Deadlift', exercises: [{ name: 'Deadlift', sets: '5×3-5' }, { name: 'Romanian DL', sets: '3×6' }, { name: 'Pull-up', sets: '4×6-8' }] }
+      ]},
+      4: { bulk: [
+        { day: 'Day 1 — Chest + Triceps', exercises: [{ name: 'Bench Press', sets: '4×8-10' }, { name: 'Incline Press', sets: '4×10' }, { name: 'Cable Flye', sets: '3×12-15' }, { name: 'Skull Crusher', sets: '3×12' }, { name: 'Tricep Pushdown', sets: '3×15' }] },
+        { day: 'Day 2 — Back + Biceps', exercises: [{ name: 'Deadlift', sets: '4×6' }, { name: 'Barbell Row', sets: '4×8' }, { name: 'Pull-up', sets: '3×8-10' }, { name: 'Barbell Curl', sets: '3×10' }, { name: 'Hammer Curl', sets: '3×10' }] },
+        { day: 'Day 3 — Legs', exercises: [{ name: 'Squat', sets: '5×5-8' }, { name: 'Leg Press', sets: '4×12' }, { name: 'Romanian DL', sets: '3×10' }, { name: 'Leg Curl', sets: '3×12' }, { name: 'Calf Raise', sets: '5×15-20' }] },
+        { day: 'Day 4 — Shoulders + Core', exercises: [{ name: 'OHP', sets: '4×8-10' }, { name: 'Lateral Raise', sets: '4×12-15' }, { name: 'Rear Delt Flye', sets: '3×15' }, { name: 'Plank', sets: '3×60sec' }] }
+      ], cut: [
+        { day: 'Day 1 — Push + Cardio', exercises: [{ name: 'Incline Press', sets: '4×12' }, { name: 'Shoulder Press', sets: '3×12' }, { name: 'Lateral Raise', sets: '3×15' }, { name: 'HIIT 15 min', sets: '—' }] },
+        { day: 'Day 2 — Pull', exercises: [{ name: 'Deadlift', sets: '3×8' }, { name: 'Pull-up', sets: '4×8-10' }, { name: 'DB Row', sets: '4×12' }, { name: 'Barbell Curl', sets: '3×12' }] },
+        { day: 'Day 3 — Legs + HIIT', exercises: [{ name: 'Squat', sets: '4×12' }, { name: 'Lunges', sets: '3×12 each' }, { name: 'Leg Curl', sets: '3×12' }, { name: 'HIIT 20 min', sets: '—' }] },
+        { day: 'Day 4 — Full Body', exercises: [{ name: 'Bench Press', sets: '3×10' }, { name: 'Barbell Row', sets: '3×10' }, { name: 'DB Thruster', sets: '3×12' }, { name: 'Chin-up', sets: '3×8' }] }
+      ], maintain: [
+        { day: 'Day 1 — Upper A', exercises: [{ name: 'Bench Press', sets: '3×10' }, { name: 'Pull-up', sets: '3×8' }, { name: 'Shoulder Press', sets: '3×10' }] },
+        { day: 'Day 2 — Lower A', exercises: [{ name: 'Squat', sets: '4×10' }, { name: 'Romanian DL', sets: '3×10' }, { name: 'Calf Raise', sets: '3×15' }] },
+        { day: 'Day 3 — Upper B', exercises: [{ name: 'Incline Press', sets: '3×10' }, { name: 'Cable Row', sets: '3×12' }, { name: 'Lateral Raise', sets: '3×12' }] },
+        { day: 'Day 4 — Lower B + Core', exercises: [{ name: 'Deadlift', sets: '3×8' }, { name: 'Leg Curl', sets: '3×12' }, { name: 'Plank', sets: '3×60sec' }] }
+      ], strength: [
+        { day: 'Day 1 — Heavy Squat', exercises: [{ name: 'Back Squat', sets: '5×5' }, { name: 'Pause Squat', sets: '3×3' }, { name: 'Leg Press', sets: '3×8' }] },
+        { day: 'Day 2 — Heavy Bench', exercises: [{ name: 'Bench Press', sets: '5×5' }, { name: 'OHP', sets: '3×5' }, { name: 'DB Row', sets: '4×8' }] },
+        { day: 'Day 3 — Accessory', exercises: [{ name: 'Romanian DL', sets: '4×8' }, { name: 'Pull-up', sets: '4×6' }, { name: 'Lateral Raise', sets: '3×12' }] },
+        { day: 'Day 4 — Heavy Deadlift', exercises: [{ name: 'Deadlift', sets: '5×3' }, { name: 'Barbell Row', sets: '4×5' }, { name: 'Front Squat', sets: '3×5' }] }
+      ]},
+      5: { bulk: [
+        { day: 'Day 1 — Push A', exercises: [{ name: 'Bench Press', sets: '4×6-8' }, { name: 'Incline DB Press', sets: '4×10' }, { name: 'Cable Flye', sets: '3×12-15' }, { name: 'Tricep Pushdown', sets: '4×12' }] },
+        { day: 'Day 2 — Pull A', exercises: [{ name: 'Deadlift', sets: '4×5' }, { name: 'Barbell Row', sets: '4×8' }, { name: 'Pull-up', sets: '4×8-10' }, { name: 'Barbell Curl', sets: '3×10' }] },
+        { day: 'Day 3 — Legs', exercises: [{ name: 'Squat', sets: '5×5-8' }, { name: 'Romanian DL', sets: '4×10' }, { name: 'Leg Press', sets: '4×12' }, { name: 'Calf Raise', sets: '5×15-20' }] },
+        { day: 'Day 4 — Push B', exercises: [{ name: 'OHP', sets: '4×8-10' }, { name: 'Lateral Raise', sets: '4×12-15' }, { name: 'Rear Delt Flye', sets: '3×15' }, { name: 'Tricep Dips', sets: '3×12' }] },
+        { day: 'Day 5 — Pull B', exercises: [{ name: 'Cable Row', sets: '4×12' }, { name: 'Lat Pulldown', sets: '4×10-12' }, { name: 'Barbell Curl', sets: '4×10' }, { name: 'Hammer Curl', sets: '3×12' }] }
+      ], cut: [
+        { day: 'Day 1 — Push + Cardio', exercises: [{ name: 'Bench Press', sets: '4×12' }, { name: 'Shoulder Press', sets: '3×12' }, { name: 'HIIT 15 min', sets: '—' }] },
+        { day: 'Day 2 — Pull', exercises: [{ name: 'Deadlift', sets: '3×6' }, { name: 'Pull-up', sets: '4×8-10' }, { name: 'Barbell Curl', sets: '3×12' }] },
+        { day: 'Day 3 — Legs', exercises: [{ name: 'Squat', sets: '4×12' }, { name: 'Romanian DL', sets: '3×12' }, { name: 'HIIT 20 min', sets: '—' }] },
+        { day: 'Day 4 — Shoulders + Arms', exercises: [{ name: 'OHP', sets: '3×12' }, { name: 'Lateral Raise', sets: '3×15' }, { name: 'Barbell Curl', sets: '3×12' }] },
+        { day: 'Day 5 — Full Body + HIIT', exercises: [{ name: 'DB Thruster', sets: '3×12' }, { name: 'Chin-up', sets: '3×8' }, { name: 'Burpees', sets: '3×10' }] }
+      ], maintain: [
+        { day: 'Day 1 — Push', exercises: [{ name: 'Bench Press', sets: '3×10' }, { name: 'OHP', sets: '3×10' }, { name: 'Lateral Raise', sets: '3×12' }] },
+        { day: 'Day 2 — Pull', exercises: [{ name: 'Deadlift', sets: '3×6' }, { name: 'Pull-up', sets: '3×8' }, { name: 'Barbell Curl', sets: '3×10' }] },
+        { day: 'Day 3 — Legs', exercises: [{ name: 'Squat', sets: '4×10' }, { name: 'Romanian DL', sets: '3×10' }, { name: 'Calf Raise', sets: '4×15' }] },
+        { day: 'Day 4 — Upper Hypertrophy', exercises: [{ name: 'Incline Press', sets: '3×12' }, { name: 'DB Row', sets: '3×12' }, { name: 'Hammer Curl', sets: '3×12' }] },
+        { day: 'Day 5 — Cardio + Core', exercises: [{ name: 'Treadmill / Run', sets: '30 min' }, { name: 'Plank', sets: '3×60sec' }, { name: 'Ab Wheel', sets: '3×10' }] }
+      ], strength: [
+        { day: 'Day 1 — Heavy Squat', exercises: [{ name: 'Back Squat', sets: '5×5' }, { name: 'Pause Squat', sets: '3×3' }, { name: 'Leg Curl', sets: '3×8' }] },
+        { day: 'Day 2 — Heavy Bench', exercises: [{ name: 'Bench Press', sets: '5×5' }, { name: 'Close Grip Bench', sets: '3×6' }, { name: 'DB Row', sets: '4×8' }] },
+        { day: 'Day 3 — Accessory Volume', exercises: [{ name: 'Romanian DL', sets: '4×8' }, { name: 'Pull-up', sets: '4×8' }, { name: 'Lateral Raise', sets: '3×12' }] },
+        { day: 'Day 4 — Heavy Deadlift', exercises: [{ name: 'Deadlift', sets: '5×3' }, { name: 'Barbell Row', sets: '4×5' }, { name: 'Front Squat', sets: '3×5' }] },
+        { day: 'Day 5 — OHP + Upper', exercises: [{ name: 'OHP', sets: '5×5' }, { name: 'Bench Press', sets: '3×8' }, { name: 'Cable Row', sets: '4×10' }] }
+      ]},
+      6: { bulk: [
+        { day: 'Day 1 — Push A', exercises: [{ name: 'Bench Press', sets: '4×6-8' }, { name: 'Incline DB Press', sets: '4×10' }, { name: 'Tricep Pushdown', sets: '4×12' }] },
+        { day: 'Day 2 — Pull A', exercises: [{ name: 'Deadlift', sets: '4×5' }, { name: 'Barbell Row', sets: '4×8' }, { name: 'Barbell Curl', sets: '4×10' }] },
+        { day: 'Day 3 — Legs A', exercises: [{ name: 'Squat', sets: '5×5' }, { name: 'Romanian DL', sets: '4×10' }, { name: 'Calf Raise', sets: '5×15' }] },
+        { day: 'Day 4 — Push B', exercises: [{ name: 'OHP', sets: '4×8' }, { name: 'Incline Press', sets: '4×10' }, { name: 'Lateral Raise', sets: '4×15' }] },
+        { day: 'Day 5 — Pull B', exercises: [{ name: 'Cable Row', sets: '4×12' }, { name: 'Lat Pulldown', sets: '4×10' }, { name: 'Hammer Curl', sets: '4×12' }] },
+        { day: 'Day 6 — Legs B + Core', exercises: [{ name: 'Back Squat', sets: '4×8' }, { name: 'Leg Curl', sets: '4×12' }, { name: 'Hanging Leg Raise', sets: '3×15' }] }
+      ], cut: [
+        { day: 'Day 1 — Push A', exercises: [{ name: 'Bench Press', sets: '4×12' }, { name: 'Shoulder Press', sets: '3×12' }, { name: 'HIIT 15 min', sets: '—' }] },
+        { day: 'Day 2 — Pull A', exercises: [{ name: 'Deadlift', sets: '3×6' }, { name: 'Pull-up', sets: '4×10' }, { name: 'Barbell Curl', sets: '3×12' }] },
+        { day: 'Day 3 — Legs A', exercises: [{ name: 'Squat', sets: '4×12' }, { name: 'Romanian DL', sets: '3×12' }, { name: 'HIIT 20 min', sets: '—' }] },
+        { day: 'Day 4 — Push B', exercises: [{ name: 'OHP', sets: '3×12' }, { name: 'Rear Delt Flye', sets: '3×15' }, { name: 'Tricep Pushdown', sets: '3×15' }] },
+        { day: 'Day 5 — Pull B', exercises: [{ name: 'DB Row', sets: '4×12' }, { name: 'Lat Pulldown', sets: '3×12' }, { name: 'Hammer Curl', sets: '3×12' }] },
+        { day: 'Day 6 — Legs B + Core', exercises: [{ name: 'Lunges', sets: '4×12 each' }, { name: 'Leg Curl', sets: '3×12' }, { name: 'Plank', sets: '3×60sec' }] }
+      ], maintain: [
+        { day: 'Day 1', exercises: [{ name: 'Bench Press', sets: '3×10' }, { name: 'OHP', sets: '3×10' }] },
+        { day: 'Day 2', exercises: [{ name: 'Deadlift', sets: '3×6' }, { name: 'Pull-up', sets: '3×8' }] },
+        { day: 'Day 3', exercises: [{ name: 'Squat', sets: '3×10' }, { name: 'Calf Raise', sets: '3×15' }] },
+        { day: 'Day 4', exercises: [{ name: 'Incline Press', sets: '3×10' }, { name: 'Shoulder Press', sets: '3×10' }] },
+        { day: 'Day 5', exercises: [{ name: 'Cable Row', sets: '3×12' }, { name: 'Face Pull', sets: '3×15' }] },
+        { day: 'Day 6', exercises: [{ name: 'Leg Press', sets: '3×12' }, { name: 'Plank', sets: '3×60sec' }] }
+      ], strength: [
+        { day: 'Day 1 — Heavy Squat', exercises: [{ name: 'Back Squat', sets: '5×5' }, { name: 'Pause Squat', sets: '3×3' }] },
+        { day: 'Day 2 — Heavy Bench', exercises: [{ name: 'Bench Press', sets: '5×5' }, { name: 'Close Grip Bench', sets: '3×6' }] },
+        { day: 'Day 3 — Heavy Deadlift', exercises: [{ name: 'Deadlift', sets: '5×3' }, { name: 'Barbell Row', sets: '4×5' }] },
+        { day: 'Day 4 — Squat Accessory', exercises: [{ name: 'Romanian DL', sets: '4×8' }, { name: 'Leg Press', sets: '4×10' }] },
+        { day: 'Day 5 — Bench Accessory', exercises: [{ name: 'OHP', sets: '4×5' }, { name: 'Incline Press', sets: '3×8' }] },
+        { day: 'Day 6 — Pull Accessory', exercises: [{ name: 'Pull-up', sets: '4×8' }, { name: 'Cable Row', sets: '4×10' }] }
+      ]}
+    };
+
+    const plan = (plans[key][goal] || plans[key].bulk);
+    let text = '';
+    plan.forEach(day => {
+      text += `\n${day.day}\n`;
+      day.exercises.forEach(ex => { text += `  • ${ex.name} — ${ex.sets}\n`; });
+    });
+    return text.trim();
+  }
+
+  function getDietText(cal, protein, carbs, fat, goal, dietType) {
+    const pSrc = {
+      nonveg: { morning: 'Boiled Eggs (3-4)', lunch: 'Chicken Breast (150g)', dinner: 'Chicken / Fish (150g)', post: 'Chicken + Rice', snack: 'Boiled Egg (1-2)' },
+      veg:    { morning: 'Paneer (100g) / Sprouts', lunch: 'Paneer / Rajma / Chickpeas', dinner: 'Dal + Paneer', post: 'Paneer + Rice', snack: 'Chickpeas / Makhana' },
+      eggetarian: { morning: 'Boiled Eggs (3-4)', lunch: 'Eggs / Paneer / Dal', dinner: 'Dal + Egg Omelette', post: 'Egg Whites + Rice', snack: 'Boiled Egg / Chickpeas' },
+      mix: { morning: 'Eggs (3) / Paneer', lunch: 'Chicken / Paneer / Dal', dinner: 'Chicken / Fish / Dal', post: 'Chicken/Paneer + Rice', snack: 'Egg / Chickpeas / Makhana' }
+    };
+    const p = pSrc[dietType] || pSrc.mix;
+    const meals = goal === 'bulk' ? [
+      { time: 'Morning 7-8 AM', food: `Oats + Banana + Milk (~${Math.round(cal*0.2)} kcal)\n  ${p.morning}` },
+      { time: 'Post-Workout', food: `Whey Protein (if available)\n  ${p.post} + Dal (~${Math.round(cal*0.3)} kcal)` },
+      { time: 'Lunch 1-2 PM', food: `2-3 Rotis + ${p.lunch} (~${Math.round(cal*0.25)} kcal)\n  Salad + Yogurt` },
+      { time: 'Evening Snack', food: `${p.snack} + Fruit (~${Math.round(cal*0.1)} kcal)` },
+      { time: 'Dinner 8-9 PM', food: `Rice/Roti + ${p.dinner} (~${Math.round(cal*0.15)} kcal)\n  Yogurt or Milk before bed` }
+    ] : goal === 'cut' ? [
+      { time: 'Morning 7-8 AM', food: `${p.morning} + Veggies (~${Math.round(cal*0.2)} kcal)\n  Black Coffee (no sugar)` },
+      { time: 'Post-Workout', food: `${p.post} small portion (~${Math.round(cal*0.25)} kcal)\n  Side salad` },
+      { time: 'Lunch', food: `1-2 Rotis + ${p.lunch} + Veggies (~${Math.round(cal*0.25)} kcal)` },
+      { time: 'Evening Snack', food: `${p.snack} + Green Tea (~${Math.round(cal*0.1)} kcal)` },
+      { time: 'Dinner', food: `${p.dinner} + Veggies only (~${Math.round(cal*0.2)} kcal)\n  Avoid carbs at night` }
+    ] : [
+      { time: 'Morning', food: `Oats + ${p.morning} (~${Math.round(cal*0.25)} kcal)` },
+      { time: 'Lunch', food: `Rice + ${p.lunch} + Veggies (~${Math.round(cal*0.35)} kcal)` },
+      { time: 'Snack', food: `${p.snack} + Fruit (~${Math.round(cal*0.1)} kcal)` },
+      { time: 'Dinner', food: `Roti + ${p.dinner} + Yogurt (~${Math.round(cal*0.3)} kcal)` }
+    ];
+    let text = `Macros: Protein ${protein}g | Carbs ${carbs}g | Fat ${fat}g | Total ${cal} kcal\n`;
+    meals.forEach(m => { text += `\n${m.time}\n  ${m.food}\n`; });
+    return text.trim();
+  }
+
+  function copyWorkout() {
+    const d = window._planData;
+    const text =
+`🏋️ ${d.name}'s Workout Plan
+📊 BMI: ${d.bmi} | 🎯 ${d.goal} | 🔥 ${d.calories} kcal
+
+${d.workoutText}
+
+🔗 consisteencyy.vercel.app`;
+    navigator.clipboard.writeText(text).then(() => {
+      const btn = document.getElementById('copyWorkoutBtn');
+      btn.textContent = '✅ Workout Copied!';
+      setTimeout(() => btn.innerHTML = '🏋️ Copy Workout Plan', 2000);
+    });
+  }
+
+  function copyDiet() {
+    const d = window._planData;
+    const text =
+`🥗 ${d.name}'s Diet Plan
+📊 BMI: ${d.bmi} | 🔥 ${d.calories} kcal | Protein: ${d.protein}g
+
+${d.dietText}
+
+🔗 consisteencyy.vercel.app`;
+    navigator.clipboard.writeText(text).then(() => {
+      const btn = document.getElementById('copyDietBtn');
+      btn.textContent = '✅ Diet Copied!';
+      setTimeout(() => btn.innerHTML = '🥗 Copy Diet Plan', 2000);
+    });
+  }
+
+  function copyPlan() {
+    const d = window._planData;
+    const dietLabels = { nonveg: 'Non-Veg', veg: 'Pure Veg', eggetarian: 'Veg + Egg', mix: 'Flexible' };
+    const text =
+`💪 ${d.name}'s Full Fitness Plan
+📊 BMI: ${d.bmi} | 🎯 ${d.goal} | 📈 ${d.level}
+🏋️ ${d.days} days/week | 🥗 ${dietLabels[d.dietType] || d.dietType}
+🔥 ${d.calories} kcal | Protein: ${d.protein}g | Carbs: ${d.carbs}g | Fat: ${d.fat}g
+
+━━━ WORKOUT ━━━
+${d.workoutText}
+
+━━━ DIET ━━━
+${d.dietText}
+
+🔗 consisteencyy.vercel.app`;
+    navigator.clipboard.writeText(text).then(() => {
+      const btn = document.getElementById('copyAllBtn');
+      btn.textContent = '✅ Full Plan Copied!';
+      setTimeout(() => btn.innerHTML = '📋 Copy Full Plan', 2000);
+    });
+  }
+</script>
+</body>
+</html>
